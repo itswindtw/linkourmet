@@ -1,8 +1,11 @@
 require 'sinatra/base'
+require 'sinatra/reloader'
 
 class Solid < Sinatra::Base
-  configure :production, :development do
+  configure do
     enable :logging
+
+    register Sinatra::Reloader if development?
   end
 
   get '/' do
