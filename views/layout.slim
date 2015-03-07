@@ -1,7 +1,33 @@
 doctype html
 html
   head
-    title Linkgoumet
     meta charset="utf-8"
+    meta http-equiv="X-UA-Compatible" content="IE=edge"
+
+    title Linkgoumet
+
+    /! JavaScript libraries
+    script src="/javascripts/jquery.min.js"
   body
     == yield
+
+    .fb-root
+    javascript:
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1469931466586824',
+          xfbml      : true,
+          cookie     : true,
+          version    : 'v2.2'
+        });
+
+        $(document).triggerHandler('after.fb.init');
+      };
+
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));

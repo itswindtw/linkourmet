@@ -1,1 +1,35 @@
-h1 Hello world
+#login-status
+
+javascript:
+  $(document).on('after.fb.init', function() {
+    var isFBLoginBtnCreated = false;
+
+    function buildFBLoginBtn() {
+      var fb_login_btn = document.createElement('fb:login-button');
+      fb_login_btn.setAttribute("max_rows", 1);
+      fb_login_btn.setAttribute("size", "large");
+      fb_login_btn.setAttribute("show_faces", false);
+      fb_login_btn.setAttribute("auto_logout_link", false);
+      return fb_login_btn;
+    }
+
+    function handleLoginStatus(response) {
+      if (response.status == "connected") {
+        postAuthToBackend(response.authResponse);
+      } else {
+        if (!isFBLoginBtnCreated) {
+          var login_btns = document.getElementById('login-status');
+          login_btns.appendChild(buildFBLoginBtn());
+          FB.XFBML.parse(login_btns);
+
+          ifFBLoginBtnCreated = true;
+        }
+      }
+    }
+
+    function postAuthToBackend(authResponse) {
+      console.log(authResponse);
+    }
+
+    FB.getLoginStatus(handleLoginStatus);
+  });
