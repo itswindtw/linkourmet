@@ -1,5 +1,6 @@
 # Load App Path
-$:.unshift(File.join(File.dirname(__FILE__), '../config'))
+$:.unshift(File.join(BASE_PATH, 'app'))
+$:.unshift(File.join(BASE_PATH, 'config'))
 
 # Database
 require 'sequel'

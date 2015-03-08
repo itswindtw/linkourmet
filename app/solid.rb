@@ -1,15 +1,18 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
+require 'slim'
+
 require 'koala'
 
 require 'solid_secret'
-require_relative 'link_grabber'
+require 'link_grabber'
 
 class Solid < Sinatra::Base
   configure do
     enable :logging
     enable :sessions
 
+    set :root, BASE_PATH
     set :session_secret, SolidSecret::SESSION_SECRET
 
     register Sinatra::Reloader if development?
@@ -61,5 +64,4 @@ class Solid < Sinatra::Base
     # check whether resque is done
     # request links through recommender system interface
   end
-
 end
