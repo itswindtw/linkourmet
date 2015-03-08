@@ -28,7 +28,12 @@ javascript:
     }
 
     function postAuthToBackend(authResponse) {
-      console.log(authResponse);
+      $.ajax({
+        type: "POST",
+        url: "/auth",
+        data: authResponse,
+        dataType: 'json'
+      });
     }
 
     FB.getLoginStatus(handleLoginStatus);
