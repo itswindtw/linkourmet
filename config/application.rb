@@ -1,3 +1,6 @@
+# Load App Path
+$:.unshift(File.join(File.dirname(__FILE__), '../config'))
+
 # Database
 require 'sequel'
 require 'yaml'
@@ -7,8 +10,8 @@ DB = Sequel.connect(db_config)
 Sequel.extension :migration
 Sequel::Migrator.check_current(DB, File.join(BASE_PATH, 'db/migrations'))
 
+# Resque
+require 'resque'
+
 # Logging
 # env['rack.logger']
-
-# Sinatra App
-require_relative File.join(BASE_PATH, 'app')

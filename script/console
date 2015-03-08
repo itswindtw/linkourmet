@@ -1,0 +1,3 @@
+#!/bin/sh
+
+RACK_ENV=${1-development} irb -Iconfig -renvironment -rapplication

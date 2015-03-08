@@ -30,9 +30,11 @@ javascript:
     function postAuthToBackend(authResponse) {
       $.ajax({
         type: "POST",
-        url: "/auth",
+        url: "/api/auth",
         data: authResponse,
-        dataType: 'json'
+        success: function (data, status, xhr) {
+          window.location.replace("/links");
+        }
       });
     }
 
