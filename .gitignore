@@ -2,3 +2,6 @@ Gemfile.lock
 
 db/*
 !db/migrations
+
+config/solid_secret.rb
+config/database.yml
