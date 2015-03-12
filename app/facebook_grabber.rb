@@ -1,8 +1,8 @@
 require 'resque'
 require 'koala'
 
-class LinkGrabber
-  @queue = :link_grabber
+class FacebookGrabber
+  @queue = :facebook_grabber
 
   def self.perform(access_token)
     graph = Koala::Facebook::API.new(access_token)
