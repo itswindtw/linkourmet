@@ -1,0 +1,42 @@
+.auth
+  ul.nav.nav-tabs.nav-justified
+    li.li-signin.active: a href="#" onclick="switchForm('signin')" Sign in
+    li.li-signup: a href="#" onclick="switchForm('signup')" Sign up
+
+  form.form-signin action="/signin" method="post"
+    label.sr-only for="inputEmail" Email
+    input.form-control{name="inputEmail" type="email" placeholder="Email" required autofocus value="#{@user.email}"}
+    label.sr-only for="inputPassword" Password
+    input.form-control{name="inputPassword" type="password" placeholder="Password" required}
+    br
+    button.btn.btn-lg.btn-primary.btn-block type="submit" Sign in
+
+  form.form-signup.hidden action="/signup" method="post"
+    label.sr-only for="inputEmail" Email
+    input.form-control{name="inputEmail" type="email" placeholder="Email" required autofocus}
+    label.sr-only for="inputPassword" Password
+    input.form-control{name="inputPassword" type="password" placeholder="Password" required}
+    label.sr-only for="inputPasswordConfirmation" Password Confirmation
+    input#inputPassword.form-control{type="password" placeholder="Password Confirmation" required}
+    br
+    button.btn.btn-lg.btn-primary.btn-block type="submit" Sign up
+
+javascript:
+  function switchForm(name) {
+    $('.auth form').addClass('hidden');
+    $('.auth ul li').removeClass('active');
+
+    $('.li-' + name).addClass('active');
+    $('.form-' + name).removeClass('hidden').find('input').first().focus();
+  }
+
+  $('.form-signup').submit(function (e) {
+    inputs = $(e.target).find('input[type="password"]');
+
+    if (inputs[0].value != inputs[1].value || inputs[0].value == "") {
+      inputs[0].value = "";
+      inputs[1].value = "";
+      return false;
+    }
+  });
+

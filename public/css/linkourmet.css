@@ -1,0 +1,35 @@
+body {
+  background-color: #E5E5E5;
+}
+
+.auth {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 15px;
+
+  background-color: white;
+  border-radius: 5px;
+}
+
+.auth form {
+  margin-top: 15px;
+}
+
+.auth .form-control {
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.loading {
+  text-align: center;
+}
+
+.loading-text {
+  margin-left: 15px;
+}
+
+.socials {
+  text-align: center;
+  margin-top: 45px;
+}
