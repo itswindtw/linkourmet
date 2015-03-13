@@ -49,7 +49,9 @@ class Solid < Sinatra::Base
   end
 
   get '/links' do
-    # TODO
+    return redirect to('/') unless logged_in? and current_user.social_services.length > 0
+
+    slim :links
   end
 
   get '/auth' do
@@ -99,7 +101,7 @@ class Solid < Sinatra::Base
     # Store/update this social service in database
     service = current_user.facebook_service
     if service
-      service.update(access_token: access_token)
+      service.update(access_token: access_token, active: true)
     else
       current_user.add_social_service(provider: 'facebook', access_token: access_token)
     end
@@ -108,6 +110,13 @@ class Solid < Sinatra::Base
     Resque.enqueue(FacebookGrabber, access_token)
 
     201
+  end
+
+  delete '/api/auth/facebook' do
+    service = current_user.facebook_service
+    service.update(active: false) if service
+
+    200
   end
 
   post '/api/auth/twitter' do
