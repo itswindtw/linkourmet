@@ -1,0 +1,44 @@
+#state-wait.row: .col-md-12
+  .loading.alert.alert-info role="alert"
+    img src="/images/loading.gif"
+    span.loading-text waiting for workers...
+#state-done.row.hidden: .col-md-8.col-md-offset-2
+
+javascript:
+  function displayLinks(links) {
+    target = $('#state-done > div');
+
+    for (var i = 0; i < links.length; ++i) {
+      $('<div class="link">' +
+        '<h3 class="link-name">' + links[i].name + '</h3>' +
+        '<span class="link-url">' + links[i].url + '</span>' +
+        '</div>').appendTo(target);
+    }
+  }
+
+  function processResponse(resp) {
+    switch (resp.status) {
+      case 'wait':
+        window.setTimeout(fetchFromBackend, 10*1000);
+        break;
+      case 'done':
+        $('#state-wait').addClass('hidden');
+        $('#state-done').removeClass('hidden');
+        displayLinks(resp.links);
+        break;
+    }
+  }
+
+  function fetchFromBackend() {
+    $.ajax({
+      type: "GET",
+      url: "/api/links",
+      dataType: 'json',
+      success: processResponse,
+      error: function () {
+        window.location.href.replace('/');
+      }
+    })
+  }
+
+  $(document).ready(fetchFromBackend);

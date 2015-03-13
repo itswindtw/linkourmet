@@ -1,5 +1,6 @@
 # Sinatra
 require 'sinatra/base'
+require 'sinatra/json'
 require 'sinatra/reloader'
 require 'slim'
 
@@ -24,6 +25,7 @@ class Solid < Sinatra::Base
     register Sinatra::Reloader if development?
   end
 
+  helpers Sinatra::JSON
   helpers do
     def set_current_user(user)
       session[:user_id] = user.id
@@ -38,6 +40,10 @@ class Solid < Sinatra::Base
     def logged_in?
       session[:user_id] != nil
     end
+
+    def service_ready?
+      logged_in? and current_user.social_services.length > 0
+    end
   end
 
   #
@@ -49,7 +55,7 @@ class Solid < Sinatra::Base
   end
 
   get '/links' do
-    return redirect to('/') unless logged_in? and current_user.social_services.length > 0
+    return redirect to('/') unless service_ready?
 
     slim :links
   end
@@ -106,8 +112,10 @@ class Solid < Sinatra::Base
       current_user.add_social_service(provider: 'facebook', access_token: access_token)
     end
 
+    current_user.increment_active_workers!
+
     # Enqueue data grabber
-    Resque.enqueue(FacebookGrabber, access_token)
+    Resque.enqueue(FacebookGrabber, current_user.id, access_token)
 
     201
   end
@@ -124,11 +132,11 @@ class Solid < Sinatra::Base
   end
 
   get '/api/links' do
-    # TODO
+    return 403 unless service_ready?
+    return json(status: 'wait') if current_user.active_workers == 0
 
-    # fetch user_id, if not found, return 403
-
-    # check whether resque is done
-    # request links through recommender system interface
+    # TODO: request links through recommender system interface
+    links = [{name: 'test', url: 'http://www.google.com'}, {}, {}]
+    json({status: 'done', links: links})
   end
 end
