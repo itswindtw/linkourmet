@@ -109,7 +109,8 @@ class Solid < Sinatra::Base
     if service
       service.update(access_token: access_token, active: true)
     else
-      current_user.add_social_service(provider: 'facebook', access_token: access_token)
+      current_user.add_social_service(
+        provider: 'facebook', access_token: access_token)
     end
 
     current_user.increment_active_workers!
@@ -124,6 +125,7 @@ class Solid < Sinatra::Base
     service = current_user.facebook_service
     service.update(active: false) if service
 
+    current_user.decrement_active_workers!
     200
   end
 

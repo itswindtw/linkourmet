@@ -1,6 +1,11 @@
 require_relative 'config/environment'
 require 'resque/tasks'
 
+task "resque:setup" do
+  require 'application'
+  require 'facebook_grabber'
+end
+
 namespace :db do
   task :environment do
     MIGRATIONS_DIR = ENV['MIGRATIONS_DIR'] || 'db/migrations'
@@ -18,7 +23,6 @@ namespace :db do
       Rake::Task['db:schema:dump'].invoke
     end
   end
-
   namespace :schema do
     task dump: :environment do
       DB.extension :schema_dumper
