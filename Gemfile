@@ -8,7 +8,6 @@ gem 'bcrypt'
 gem 'sqlite3'
 gem 'sequel'
 
-gem "koala"
+gem 'koala'
 
 gem 'resque'
-

@@ -1,7 +1,7 @@
 require_relative 'config/environment'
 require 'resque/tasks'
 
-task "resque:setup" do
+task 'resque:setup' do
   require 'application'
   require 'facebook_grabber'
 end

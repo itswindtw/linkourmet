@@ -7,8 +7,8 @@ Bundler.setup(:default, RACK_ENV)
 puts "Initializing App in #{RACK_ENV} mode..."
 
 # Load App Path
-$:.unshift(File.join(BASE_PATH, 'app'))
-$:.unshift(File.join(BASE_PATH, 'config'))
+$LOAD_PATH.unshift(File.join(BASE_PATH, 'app'))
+$LOAD_PATH.unshift(File.join(BASE_PATH, 'config'))
 
 # Database connection
 require 'sequel'

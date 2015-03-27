@@ -1,0 +1,9 @@
+Documentation:
+  Enabled: false
+
+LineLength:
+  Max: 120
+
+AllCops:
+  Exclude:
+    - 'db/**/*'

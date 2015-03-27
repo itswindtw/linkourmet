@@ -42,7 +42,7 @@ class Solid < Sinatra::Base
     end
 
     def service_ready?
-      logged_in? and current_user.social_services.length > 0
+      logged_in? && current_user.social_services.length > 0
     end
   end
 
@@ -70,7 +70,7 @@ class Solid < Sinatra::Base
   post '/signin' do
     @user = User.where(email: params[:inputEmail]).first
 
-    if @user and BCrypt::Password.new(@user.password) == params[:inputPassword]
+    if @user && BCrypt::Password.new(@user.password) == params[:inputPassword]
       set_current_user(@user)
       redirect to('/')
     else
@@ -138,7 +138,7 @@ class Solid < Sinatra::Base
     return json(status: 'wait') if current_user.active_workers == 0
 
     # TODO: request links through recommender system interface
-    links = [{name: 'test', url: 'http://www.google.com'}, {}, {}]
-    json({status: 'done', links: links})
+    links = [{ name: 'test', url: 'http://www.google.com' }, {}, {}]
+    json(status: 'done', links: links)
   end
 end
