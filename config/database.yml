@@ -1,0 +1,14 @@
+default: &default
+  adapter: postgres
+
+development:
+  <<: *default
+  database: linkgoumet_development
+
+test:
+  <<: *default
+  database: linkgoumet_test
+
+production:
+  <<: *default
+  database: linkgoumet_production
