@@ -14,10 +14,7 @@ $LOAD_PATH.unshift(File.join(BASE_PATH, 'config'))
 require 'sequel'
 require 'yaml'
 
-db_config = if RACK_ENV == 'production'
-  ENV['DATABASE_URL']
-else
-  YAML.load_file(File.join(BASE_PATH, 'config/database.yml'))[RACK_ENV]
-end
+db_config = ENV['DATABASE_URL']
+db_config ||= YAML.load_file(File.join(BASE_PATH, 'config/database.yml'))[RACK_ENV]
 DB = Sequel.connect(db_config)
 Sequel.extension :migration
