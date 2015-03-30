@@ -10,7 +10,7 @@ javascript:
 
     for (var i = 0; i < links.length; ++i) {
       $('<div class="link">' +
-        '<h3 class="link-name">' + links[i].name + '</h3>' +
+        '<h3 class="link-name">' + links[i].title + '</h3>' +
         '<span class="link-url">' + links[i].url + '</span>' +
         '</div>').appendTo(target);
     }
@@ -30,6 +30,8 @@ javascript:
   }
 
   function fetchFromBackend() {
+    console.log('fetchFromBackend');
+
     $.ajax({
       type: "GET",
       url: "/api/links",
@@ -38,7 +40,7 @@ javascript:
       error: function () {
         window.location.href.replace('/');
       }
-    })
+    });
   }
 
   $(document).ready(fetchFromBackend);

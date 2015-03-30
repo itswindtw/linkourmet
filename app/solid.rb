@@ -44,6 +44,15 @@ class Solid < Sinatra::Base
     def service_ready?
       logged_in? && current_user.social_services.length > 0
     end
+
+    def fetch_links_for(user_id)
+      uri = URI("#{API_ENDPOINT}getRec?user=#{user_id}")
+      res = Net::HTTP.get_response(uri)
+
+      return nil unless res.code.to_i == 200
+
+      JSON.parse(res.body)['reclinks']
+    end
   end
 
   #
@@ -135,10 +144,14 @@ class Solid < Sinatra::Base
 
   get '/api/links' do
     return 403 unless service_ready?
-    return json(status: 'wait') if current_user.active_workers == 0
+    return json(status: 'wait') unless current_user.active_workers == 0
 
-    # TODO: request links through recommender system interface
-    links = [{ name: 'test', url: 'http://www.google.com' }, {}, {}]
-    json(status: 'done', links: links)
+    # request links through recommender system interface
+    links = fetch_links_for(current_user.id)
+    if links
+      json(status: 'done', links: links)
+    else
+      json(status: 'error')
+    end
   end
 end

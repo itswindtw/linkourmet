@@ -4,7 +4,6 @@ require 'koala'
 require 'models'
 
 class FacebookGrabber
-  API_ENDPOINT = 'http://54.186.129.251:3000'
   PAGING_LIMIT = 100
   LINK_FIELDS = [:link, :name, :created_time]
 
