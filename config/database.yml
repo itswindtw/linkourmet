@@ -3,12 +3,12 @@ default: &default
 
 development:
   <<: *default
-  database: linkgoumet_development
+  database: linkoumet_development
 
 test:
   <<: *default
-  database: linkgoumet_test
+  database: linkoumet_test
 
 production:
   <<: *default
-  database: linkgoumet_production
+  database: linkoumet_production
