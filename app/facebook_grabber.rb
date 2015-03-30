@@ -4,7 +4,7 @@ require 'koala'
 require 'models'
 
 class FacebookGrabber
-  PAGING_LIMIT = 100
+  PAGING_LIMIT = 250
   LINK_FIELDS = [:link, :name, :created_time]
 
   @queue = :facebook_grabber
@@ -22,6 +22,7 @@ class FacebookGrabber
 
   def self.save_links(user_id, my_links)
     links = transform_links(my_links)
+    user_id = user_id.to_s
 
     uri = URI("#{API_ENDPOINT}/sendLink")
     req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')

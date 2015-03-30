@@ -21,7 +21,7 @@ javascript:
 
     switch (resp.status) {
       case 'wait':
-        window.setTimeout(fetchFromBackend, 10*1000);
+        window.setTimeout(fetchFromBackend, 5*1000);
         break;
       case 'done':
         $('#state-wait').addClass('hidden');
