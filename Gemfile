@@ -4,10 +4,9 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'slim'
 
-gem 'bcrypt'
-gem 'sqlite3'
 gem 'sequel'
+gem 'pg'
 
 gem 'koala'
-
+gem 'bcrypt'
 gem 'resque'
