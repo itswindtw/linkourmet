@@ -1,14 +1,8 @@
-default: &default
-  adapter: postgres
-
 development:
-  <<: *default
-  database: linkoumet_development
+  adapter: postgres
+  database: linkourmet_development
 
 test:
-  <<: *default
-  database: linkoumet_test
+  adapter: sqlite
+  database: db/test.sqlite
 
-production:
-  <<: *default
-  database: linkoumet_production

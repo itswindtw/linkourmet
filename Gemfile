@@ -9,7 +9,10 @@ gem 'slim'
 
 gem 'sequel'
 gem 'pg'
+gem 'sqlite3', group: :test
 
 gem 'koala'
 gem 'bcrypt'
 gem 'resque'
+
+gem 'unicorn'
