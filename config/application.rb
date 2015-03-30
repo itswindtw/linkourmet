@@ -11,7 +11,7 @@ Resque.before_fork do
   defined?(DB) && DB.disconnect
 end
 
-API_ENDPOINT = 'http://linkrec.ddns.net:3000/'
+API_ENDPOINT = 'http://linkrec.ddns.net:3000'
 
 # Logging
 # env['rack.logger']

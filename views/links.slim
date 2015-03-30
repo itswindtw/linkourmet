@@ -17,6 +17,8 @@ javascript:
   }
 
   function processResponse(resp) {
+    console.log('processResponse', resp);
+
     switch (resp.status) {
       case 'wait':
         window.setTimeout(fetchFromBackend, 10*1000);

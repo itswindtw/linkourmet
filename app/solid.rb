@@ -46,8 +46,9 @@ class Solid < Sinatra::Base
     end
 
     def fetch_links_for(user_id)
-      uri = URI("#{API_ENDPOINT}getRec?user=#{user_id}")
+      uri = URI("#{API_ENDPOINT}/getRec?user=#{user_id}")
       res = Net::HTTP.get_response(uri)
+      logger.info("#{uri}: #{res}")
 
       return nil unless res.code.to_i == 200
 
