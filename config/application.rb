@@ -4,15 +4,13 @@ Sequel::Migrator.check_current(DB, File.join(BASE_PATH, 'db/migrations'))
 # Models
 require 'models'
 
-# Redis
-require 'redis'
-if ENV['REDISCLOUD_URL']
-  uri = URI.parse(ENV["REDISCLOUD_URL"])
-  $redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
-end
-
 # Resque
 require 'resque'
+Resque.redis = if RACK_ENV == 'production'
+  ENV['REDISCLOUD_URL']
+else
+  'localhost:6379'
+end
 
 Resque.before_fork do
   defined?(DB) && DB.disconnect
