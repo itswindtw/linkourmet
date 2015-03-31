@@ -5,8 +5,8 @@ require 'models'
 
 class FacebookGrabber
   PAGING_LIMIT = 250
-  REQUEST_FIELDS = [:status_type, :link, :name, :created_time]
-  STATUS_TYPES = [:shared_story]
+  REQUEST_FIELDS = ['status_type', 'link', 'name', 'created_time']
+  STATUS_TYPES = ['shared_story']
 
   @queue = :facebook_grabber
 
@@ -28,6 +28,8 @@ class FacebookGrabber
   def self.save_links(user_id, my_links)
     links = transform_links(my_links.select { |link| STATUS_TYPES.include?(link['status_type']) })
     user_id = user_id.to_s
+
+    return if links.empty?
 
     uri = URI("#{API_ENDPOINT}/sendLink")
     req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
