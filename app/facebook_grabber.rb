@@ -67,16 +67,21 @@ class FacebookGrabber
   def self.perform(user_id, access_token)
     user = User[user_id]
     cursor = user.facebook_service.cursor
+    success = false
 
-    # Two cases here: First time; Otherwise(having cursor)
-    new_cursor = if cursor
-      perform_with_cursor(user_id, access_token, cursor)
-    else
-      perform_without_cursor(user_id, access_token)
+    begin
+      # Two cases here: First time; Otherwise(having cursor)
+      new_cursor = if cursor
+        perform_with_cursor(user_id, access_token, cursor)
+      else
+        perform_without_cursor(user_id, access_token)
+      end
+      success = true
+    ensure
+      user.decrement_active_workers!
+      user.facebook_service.update(cursor: new_cursor)
     end
 
-    user.decrement_active_workers!
-    user.facebook_service.update(cursor: new_cursor)
-    true
+    success
   end
 end
