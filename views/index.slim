@@ -2,7 +2,7 @@
   .row: .col-md-12.text-center: h2 Choose a social network to start
   .row.socials
     .col-md-3.col-md-offset-3
-      .fb-login-button data-max-rows="1" data-size="xlarge" onlogin="handleFacebook(function() { handleSocials([]); })"
+      .fb-login-button data-max-rows="1" data-size="xlarge" onlogin="handleFacebook(function() { handleSocials([]); })" scope="user_posts"
     .col-md-3 twitter
 - else
   .row
@@ -48,7 +48,7 @@ javascript:
       appId      : '1478886685691302',
       xfbml      : true,
       cookie     : true,
-      version    : 'v2.2'
+      version    : 'v2.3'
     });
 
     isFacebookReady = true;
