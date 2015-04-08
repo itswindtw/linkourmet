@@ -4,5 +4,4 @@ development:
 
 test:
   adapter: sqlite
-  database: db/test.sqlite
 

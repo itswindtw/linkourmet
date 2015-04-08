@@ -69,6 +69,7 @@ class FacebookGrabber
   def self.perform(user_id, access_token)
     user = User[user_id]
     cursor = user.facebook_service.cursor
+    new_cursor = nil
     success = false
 
     begin

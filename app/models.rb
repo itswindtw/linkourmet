@@ -6,6 +6,8 @@ class User < Sequel::Model
   end
 
   def increment_active_workers!
+    return if values[:active_workers] >= 2
+
     values[:active_workers] += 1
     save(columns: [:active_workers])
   end
