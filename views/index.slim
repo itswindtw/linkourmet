@@ -1,44 +1,16 @@
-- if @social_services.empty?
-  .row: .col-md-12.text-center: h2 Choose a social network to start
-  .row.socials
-    .col-md-3.col-md-offset-3
-      .fb-login-button data-max-rows="1" data-size="xlarge" onlogin="handleFacebook(function() { handleSocials([]); })" scope="user_posts"
-    .col-md-3 twitter
-- else
-  .row
-    .col-md-12: .loading.alert.alert-info role="alert"
-      img src="/images/loading.gif"
-      span.loading-text Loading...
-    #social-services
-
-  javascript:
-    $(document).ready(function () {
-      handleSocials(#{{@social_services.to_json}});
-    });
+.row: .col-md-12.text-center: h2 Choose a social network to start
+.row.socials
+  .col-md-3.col-md-offset-3
+    .fb-login-button data-max-rows="1" data-size="xlarge" onlogin="handleFacebook(function() { gotoNextStep(); })" scope="user_posts"
+  .col-md-3
+    a.twitter-login-button href="#" onclick="handleTwitter(function () { gotoNextStep(); })": img src="/images/sign-in-with-twitter-gray.png"
 
 #fb-root
 
 javascript:
   /* Common */
-  function handleSocials(services) {
-    if (services.length == 0) {
-      window.location.replace("/links");
-    }
-
-    service = services.shift();
-
-    callback = function () {
-      handleSocials(services);
-    };
-
-    switch (service) {
-      case 'facebook':
-        handleFacebook(callback);
-        break;
-      case 'twitter':
-        handleTwitter(callback);
-        break;
-    }
+  function gotoNextStep() {
+    window.location.replace("/links");
   }
 
   /* Facebook */
@@ -93,4 +65,16 @@ javascript:
     }
   }
 
+  /* Twitter */
+  function handleTwitter(callback) {
+    var oauth_window = window.open("/api/auth/twitter", 'Twitter', 'status=no,toolbar=no,menubar=no');
+
+    window.oauth_callback = function () {
+      oauth_window.close();
+      window.focus();
+      callback();
+    };
+
+    oauth_window.focus();
+  }
 

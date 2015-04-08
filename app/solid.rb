@@ -10,8 +10,12 @@ require 'bcrypt'
 # Facebook graph API
 require 'koala'
 
+# Twitter
+require 'twitter_oauth'
+
 # Solid
 require 'facebook_grabber'
+require 'twitter_grabber'
 require 'solid_secret'
 
 class Solid < Sinatra::Base
@@ -53,6 +57,13 @@ class Solid < Sinatra::Base
       return nil unless res.code.to_i == 200
 
       JSON.parse(res.body)['reclinks']
+    end
+
+    def host_with_port
+      standard_port = if request.scheme == 'http' then 80 else 443 end
+      port_string = if request.port == standard_port then '' else ":#{request.port}" end
+
+      "#{request.scheme}://#{request.host}#{port_string}"
     end
   end
 
@@ -139,8 +150,52 @@ class Solid < Sinatra::Base
     200
   end
 
-  post '/api/auth/twitter' do
-    # TODO
+
+  before '/api/auth/twitter*' do
+    @client = TwitterOAuth::Client.new(
+      consumer_key: SolidSecret::TWITTER_CONSUMER_KEY,
+      consumer_secret: SolidSecret::TWITTER_CONSUMER_SECRET)
+  end
+
+  get '/api/auth/twitter' do
+    # TODO: authentication_request_token
+    request_token = @client.request_token(oauth_callback: "#{host_with_port}/api/auth/twitter/callback")
+    session[:request_token] = request_token.token
+    session[:request_token_secret] = request_token.secret
+
+    redirect to(request_token.authorize_url)
+  end
+
+  get '/api/auth/twitter/callback' do
+    access_token = @client.authorize(
+      session[:request_token],
+      session[:request_token_secret],
+      oauth_verifier: params[:oauth_verifier])
+
+    if @client.authorized?
+      # Store/update this social service in database
+      service = current_user.twitter_service
+      if service
+        service.update(
+          access_token: access_token.token,
+          access_token_secret: access_token.secret,
+          active: true)
+      else
+        current_user.add_social_service(
+          provider: 'twitter',
+          access_token: access_token.token,
+          access_token_secret: access_token.secret)
+      end
+
+      current_user.increment_active_workers!
+
+      # Enqueue data grabber
+      Resque.enqueue(TwitterGrabber, current_user.id, access_token.token, access_token.secret)
+
+      slim :auth_twitter_callback
+    else
+      401
+    end
   end
 
   get '/api/links' do

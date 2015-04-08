@@ -4,6 +4,7 @@ require 'resque/tasks'
 task 'resque:setup' do
   require 'application'
   require 'facebook_grabber'
+  require 'twitter_grabber'
 end
 
 namespace :db do

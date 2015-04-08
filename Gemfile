@@ -12,6 +12,8 @@ gem 'pg'
 gem 'sqlite3', group: :test
 
 gem 'koala'
+gem 'twitter_oauth'
+
 gem 'bcrypt'
 gem 'resque'
 
