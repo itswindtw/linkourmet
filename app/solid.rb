@@ -56,7 +56,7 @@ class Solid < Sinatra::Base
 
       return nil unless res.code.to_i == 200
 
-      JSON.parse(res.body)['reclinks']
+      JSON.parse(res.body)
     end
 
     def host_with_port
@@ -204,10 +204,12 @@ class Solid < Sinatra::Base
 
     # request links through recommender system interface
     links = fetch_links_for(current_user.id)
-    if links
+
+    return json(status: 'error') unless links
+    if links['reclinks']
       json(status: 'done', links: links)
     else
-      json(status: 'error')
+      json(status: 'wait')
     end
   end
 end
