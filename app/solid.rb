@@ -68,6 +68,14 @@ class Solid < Sinatra::Base
   end
 
   #
+  get '/tests/:page_category/:page_name' do
+    @page_category = params[:page_category]
+    @page_name = params[:page_name]
+
+    slim :test, layout: false
+  end
+
+  #
   get '/' do
     return redirect to('/auth') unless logged_in?
 
