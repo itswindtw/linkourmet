@@ -215,7 +215,7 @@ class Solid < Sinatra::Base
 
     return json(status: 'error') unless links
     if links['reclinks']
-      json(status: 'done', links: links)
+      json(status: 'done', links: links['reclinks'])
     else
       json(status: 'wait')
     end
